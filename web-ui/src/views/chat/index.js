@@ -51,7 +51,7 @@ export default function Chat() {
 
 
   return(
-    <div className="grid grid-cols-3 gap-2 lg:px-48 lg:pt-24">
+    <div className="grid grid-cols-3 lg:px-48 lg:pt-24">
       <Contacts contacts={contacts} changeChat={handleChatChange} />
       {currentChat === undefined ? (
         <Welcome />

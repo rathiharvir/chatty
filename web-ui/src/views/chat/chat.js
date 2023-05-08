@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import ChatInput from "./chat_input";
-// import Logout from "./Logout";
+import Logout from "./logout";
 import { v4 as uuidv4 } from "uuid";
 import axios from "axios";
 import { sendMessageRoute, recieveMessageRoute } from "constants/route.constant";
@@ -73,8 +73,8 @@ export default function ChatContainer({ currentChat, socket }) {
   }, [messages]);
 
   return (
-    <div className="col-span-2">
-      <div className="flex justify-between items-center px-0 py-8">
+    <div className="col-span-2 border border-gray-300 rounded-tr-xl rounded-br-xl p-2">
+      <div className="flex justify-between items-center px-0 py-1 ">
         <div className="flex items-center gap-4 ">
           <div>
             <img
@@ -87,18 +87,21 @@ export default function ChatContainer({ currentChat, socket }) {
             <h3>{currentChat.username}</h3>
           </div>
         </div>
-        {/* <Logout /> */}
+        <Logout />
       </div>
+      <hr className="h-px my-2 bg-gray-200 border-0 dark:bg-gray-700"></hr>
       <div className="px-4 py-8 flex flex-col gap-4 overflow-auto" style={{height: '50vh'}}>
         {messages.map((message) => {
           return (
             <div ref={scrollRef} key={uuidv4()}>
               <div
                 className={`flex items-center ${
-                  message.fromSelf ? "justify-end" : "justify-start"
+                  message.fromSelf ? "justify-end " : "justify-start "
                 }`}
               >
-                <div className="p-4 text-lg rounded-2xl" style={{maxWidth: '70%', overflowWrap: 'break-word'}}>
+                <div className={`p-2 text-base rounded-2xl bg-indigo-50 ${
+                  message.fromSelf ? "rounded-br-none" : "rounded-bl-none"
+                }`} style={{maxWidth: '70%', overflowWrap: 'break-word'}}>
                   <p>{message.message}</p>
                 </div>
               </div>

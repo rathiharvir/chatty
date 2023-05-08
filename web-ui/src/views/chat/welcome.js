@@ -14,7 +14,7 @@ export default function Welcome() {
     );
   }
   return (
-    <div className="col-span-2">
+    <div className="col-span-2 border border-gray-300 rounded-tr-xl rounded-br-xl p-2">
       <img className="h-96" src={Robot} alt="" />
       <h1>
         Welcome, <span>{userName}!</span>
