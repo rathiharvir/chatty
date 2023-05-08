@@ -1,11 +1,17 @@
-import React, { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import React, { useEffect, useState, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { io } from "socket.io-client";
 import axios from 'axios';
-import { allUsersRoute } from 'constants/route.constant';
+import { allUsersRoute, host } from 'constants/route.constant';
+import Contacts from './contacts';
+import ChatContainer from "./chat";
+import Welcome from "./welcome";
 
 export default function Chat() {
+  const socket = useRef();
   const navigate = useNavigate()
   const [contacts, setContacts] = useState([])
+  const [currentChat, setCurrentChat] = useState(undefined);
   const [currentUser, setCurrentUser] = useState(undefined)
   useEffect(() => {
     async function fetchData() {
@@ -19,10 +25,17 @@ export default function Chat() {
   }, [])
 
   useEffect(() => {
+    if (currentUser) {
+      socket.current = io(host);
+      socket.current.emit("add-user", currentUser._id);
+    }
+  }, [currentUser]);
+
+  useEffect(() => {
     async function fetchData() {
       if(currentUser) {
         if(currentUser.isAvatarImageSet) {
-          const data = await axios.post(`${allUsersRoute}/${currentUser._id}`)
+          const data = await axios.get(`${allUsersRoute}/${currentUser._id}`)
           setContacts(data.data)
         } else {
           navigate('/avatar')
@@ -31,9 +44,20 @@ export default function Chat() {
     }
     fetchData();
   }, [currentUser])
+
+  const handleChatChange = (chat) => {
+    setCurrentChat(chat);
+  };
+
+
   return(
-    <div>
-        Chat
+    <div className="grid grid-cols-3 gap-2 lg:px-48 lg:pt-24">
+      <Contacts contacts={contacts} changeChat={handleChatChange} />
+      {currentChat === undefined ? (
+        <Welcome />
+      ) : (
+        <ChatContainer currentChat={currentChat} socket={socket} />
+      )}
     </div>
   )
 }

@@ -100,7 +100,7 @@ export default function SignIn() {
 
                     <p className="mt-10 text-center text-sm text-gray-500">
                         Not a member ? &nbsp;
-                        <Link to="/sign-up" className="font-semibold leading-6 text-green-600 hover:text-green-500">Sign In</Link>
+                        <Link to="/sign-up" className="font-semibold leading-6 text-green-600 hover:text-green-500">Sign Up </Link>
                     </p>
                 </div>
             </div>
