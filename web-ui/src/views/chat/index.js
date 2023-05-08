@@ -32,19 +32,24 @@ export default function Chat() {
   }, [currentUser]);
 
   useEffect(() => {
-    async function fetchData() {
-      if(currentUser) {
-        if(currentUser.isAvatarImageSet) {
-          const data = await axios.get(`${allUsersRoute}/${currentUser._id}`)
-          setContacts(data.data)
-        } else {
-          navigate('/avatar')
-        }
-      } 
-    }
     fetchData();
   }, [currentUser])
 
+  async function fetchData() {
+    if(currentUser) {
+      if(currentUser.isAvatarImageSet) {
+        const data = await axios.get(`${allUsersRoute}/${currentUser._id}`)
+        .catch((err) => {
+          console.log(err)
+        })
+        if(data?.data) {
+          setContacts(data.data)
+        }
+      } else {
+        navigate('/avatar')
+      }
+    } 
+  }
   const handleChatChange = (chat) => {
     setCurrentChat(chat);
   };
